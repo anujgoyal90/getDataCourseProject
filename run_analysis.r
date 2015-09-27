@@ -44,19 +44,25 @@ testData<-cbind(subject_test,y_test_data,x_test_data)
 finlaData<-rbind(trainingData,testData)
 
 #For part 2, we need to subset the data by column names containing mean or std dev of a measurement.
-# Looking at the column names in finalData, create a logical vector of the columns to include
+#Create a vector to store the column names of finalData. 
+#Use this vector to create a logical vector of column names we want to keep in the subset data
 
 columnNames<-names(finalData)
 logicalVector <- (grepl("subject_id",columnNames)|grepl("activity_id",columnNames)|grepl("mean()",columnNames)|grepl("std()",columnNames))
 
 #Finally, subset the data to the desired columns only
+
 finalData = finalData[logicalVector==TRUE]
 
-#For part 3, add the activity names in activity_label sheet to the final data by merging by activity id
+#For part 3, we add the descriptive activity names in activity_label to the final data by merging the 2 tables by activity id
+
 finalData <- merge(activity_labels, finalData, by='activity_id',all.x=TRUE)
 
 #For part 5, we melt the final data by activity id, activity type and subject id
-#First, we need to identify the measure variables which are the mean and std dev observations
+#First, we need to identify the id variables and measure variables.
+#Te id variables are the identifiers for an observation viz. subject id, activity id and activity type
+#The measure variables are the variables with the mean and std dev observations
+
 measureVariables <- finalColumnNames[(grepl("mean()",finalColumnNames)|grepl("std()",finalColumnNames))]
 finalDataMelt <-melt(finalData,id=c("activity_id","activity_type","subject_id"),measure=measureVariables)
 
