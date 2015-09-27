@@ -1,3 +1,5 @@
+library(reshape2) #needed to run the melt and dcast functions in part 5
+
 #Set working directory to location of data folder on local drive
 
 setwd("C://Users//AnujGoyal//Desktop//R//Course Project//UCI HAR Dataset")
