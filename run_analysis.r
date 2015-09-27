@@ -1,4 +1,4 @@
-#Set working directory to location of folder on local drive
+#Set working directory to location of data folder on local drive
 
 setwd("C://Users//AnujGoyal//Desktop//R//Course Project//UCI HAR Dataset")
 
@@ -13,23 +13,35 @@ subject_train<-read.table("./train/subject_train.txt")
 activity_labels<-read.table("./activity_labels.txt")
 features<-read.table("./features.txt")
 
-#Next, look at the column headers of all tables and give them descriptive names. This resolves part 4 of the assignment early on.
+#Next, look at the column headers of all tables and give them descriptive names. 
+#This resolves part 4 of the assignment early on.
+
 names(activity_labels)<-c("activity_id","activity_type")
 names(features)<-c("feature_id","feature_type")
-names(subject_test)<-c("subject_id")
-names(subject_train)<-c("subject_id") #these are given the same name to help merge later
-names(y_train_data)<-c("activity_id")
-names(y_test_data)<-c("activity_id") #these are given the same name to help merge later
-names(x_test_data)<-features$feature_type
-names(x_train_data)<-features$feature_type #since there are 561 feature types and x_test_data has 561 variables, these must describe the variables
 
-# create the training and test data sets by merging the subject id, activity id and observations data sets
+#The subjects in the test and training data are given the same name to help with merging the datasets later 
+#Similarly the activity id in test and training data are given the same name to help merging datasets later
+
+names(subject_test)<-c("subject_id")
+names(subject_train)<-c("subject_id")
+names(y_train_data)<-c("activity_id")
+names(y_test_data)<-c("activity_id")
+
+#since there are 561 feature types and x_test_data and x_train_data have 561 variables, these must describe the variables
+#these are more descriptive names for the variables than V, V.1, V.2 and so on
+
+names(x_test_data)<-features$feature_type
+names(x_train_data)<-features$feature_type
+
+# create the training and test data sets by merging the subject id, activity id and measurements data sets
+
 trainingData<-cbind(subject_train,y_train_data,x_train_data)
 testData<-cbind(subject_test,y_test_data,x_test_data)
 
-# final data just merges the training and test datasets. The previous steps ensure that all column names are the same in both datasets
-#This solves part 1 of the assignment
-finaData<-rbind(trainingData,testData)
+#Next step is to merge the training and test data row-wise. This solves part 1 of the assignment.
+#The previous steps ensure that all column headers are the same in both datasets to help with merging
+
+finlaData<-rbind(trainingData,testData)
 
 #For part 2, we need to subset the data by column names containing mean or std dev of a measurement.
 # Looking at the column names in finalData, create a logical vector of the columns to include
