@@ -95,5 +95,15 @@ trainingData: this binds the subject_train, y_train_data and x_train_data tables
 
 testData: this binds the subject_test, y_test_data and x_test_data tables
 
+finalData: this merges the trainingData and testData tables
 
+Part 3:
 
+finalData: this table is updated to include only those variables which are the mean or standard deviation of measurements
+
+Part 5:
+
+finaldataMelt: this is an intermediate table made by melting the finalData table.
+The id variables are "activity_type" and "subject_id". All other columns are measure variables.
+
+tidyData: this table calculates the mean of all variables by subject_id and activity_type
