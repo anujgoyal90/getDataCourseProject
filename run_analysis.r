@@ -40,5 +40,16 @@ logicalVector <- (grepl("subject_id",columnNames)|grepl("activity_id",columnName
 #Finally, subset the data to the desired columns only
 finalData = finalData[logicalVector==TRUE]
 
-#For step 3, add the activity names in activity_label sheet to the final data by merging by activity id
+#For part 3, add the activity names in activity_label sheet to the final data by merging by activity id
 finalData <- merge(activity_labels, finalData, by='activity_id',all.x=TRUE)
+
+#For part 5, we melt the final data by activity id, activity type and subject id
+#First, we need to identify the measure variables which are the mean and std dev observations
+measureVariables <- finalColumnNames[(grepl("mean()",finalColumnNames)|grepl("std()",finalColumnNames))]
+finalDataMelt <-melt(finalData,id=c("activity_id","activity_type","subject_id"),measure=measureVariables)
+
+#Lastly, recast the data to average all measured variables by subject id, activity id and activity type
+tidyData <- dcast(finalDataMelt, subject_id + activity_id + activity_type ~ variable, mean)
+
+#Write the tidied data to a new txt file called tidyData.txt
+write.table(tidyData, './tidyData.txt',row.names=TRUE)
